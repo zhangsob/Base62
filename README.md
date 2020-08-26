@@ -43,11 +43,13 @@ Base62 [ Binary To String Encoding / Decoding(String To Binary) ]에서는 아�
 | xxxx xxxx 1111 yyyy |   01 xxxx xxxx yyyy |
 | 1111 xxxx yyyy yyyy |   10 xxxx yyyy yyyy |
 | 1111 xxxx 1111 yyyy |   11 0000 xxxx yyyy |  
+
 2<sup>14</sup> < 240<sup>2</sup> < 61<sup>3</sup> ( 16,384 < 57,600 < 226,981 ) 이므로 표현이 가능하다.
 
 |  1 Byte   |    Value  |
 |-----------|-----------|
 | 1111 xxxx |    1 xxxx |  
+
 2<sup>5</sup> < 240<sup>1</sup> < 61<sup>2</sup> ( 32 < 240 < 3,721 ) 이므로 표현이 가능하다.
 
 ## Encoding
@@ -70,18 +72,18 @@ AN61 : UCS2 String to AlphaNumeric Only String Encoding
 public static void main(String[] args) {
     try {
         byte[] bin = new byte[256] ;
-        for(int i = 0; i <= 0xFF; ++i)
+        for(int i = 0; i < bin.length; ++i)
             bin[i] = (byte)i ;
             
         System.out.println("----bin["+bin.length+"]----") ;
-        System.out.println(Base62.toHexa(bin)) ;
+        System.out.println(Base62.bin2hexa(bin)) ;
 
         String txt = Base62.encode(bin) ;
-        System.out.println("txt:" + txt) ;
+        System.out.println("txt["+txt.length()+"]:" + txt) ;
 
         byte[] out = Base62.decode(txt) ;
         System.out.println("----out["+out.length+"]----") ;
-        System.out.println(Base62.toHexa(out)) ;
+        System.out.println(Base62.bin2hexa(out)) ;
     } catch(Exception e) {
         e.printStackTrace();
     }
@@ -299,4 +301,110 @@ tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfS
 out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可🐘
 src1 === out2 : true
+```
+
+- python (Base62)
+```python
+if __name__ == '__main__':
+    bin = bytearray(256) ;
+    for i in range(len(bin)) :
+        bin[i] = i
+
+    print('----bin['+str(len(bin))+']----')
+    print(Base62.bin2hexa(bin))
+    txt = Base62.encode(bin)
+    print('txt['+str(len(txt))+']:'+txt)
+    out = Base62.decode(txt)
+    print('----out['+str(len(out))+']----')
+    print(Base62.bin2hexa(out))
+```
+-----------------------------------------------------------------------------------
+```
+----bin[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
+
+txt[348]:003x0kgb1WKF2Hws33aW3oEA4Zqn5LUR67856rki7dOM8P209Aed9vIHAguuBSYYCECCCyopDkSTEW67FHikG3MOGo02HZcfILGJJ6swJrWaKdAELOmrMAQVMv49NggmOSKQPDx4PyahQkELRVqySHUcT38GTnktUZOXVL2BW6eoWrISXcv6YOYjZACNZup1agSebS6IcDivcyMZdk0DeVcqfHGUg2t8gnWlhZAPiKn3j6Qgjr4KkcgxlOKbm9xFmuasngEWoRrApDUnpy8Rqjl5rVOisH2Mt2f0tnIduYvHvKYuw6CYwqpCxcSpyO6TzWKagzWKo7zWL2XzWLFxzWLTOz0V
+----out[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
+```
+
+- python (AN61)
+```python
+if __name__ == '__main__':
+    src0 = 'http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可'
+    print('src0['+str(len(src0))+']:' + src0)
+    an61__tmp0 = AN61.encode(src0)
+    print('an61__tmp0['+str(len(an61__tmp0))+']:' + an61__tmp0)
+    an61__out0 = AN61.decode(an61__tmp0)
+    print('an61__out0['+str(len(an61__out0))+']:' + an61__out0)
+    print('src0 == an61__out0 :', (src0 == an61__out0))
+    base64_tmp = base64.b64encode(src0.encode('utf8')).decode('utf8')
+    print('base64_tmp['+str(len(base64_tmp))+']:' + base64_tmp)
+    base64_out = base64.b64decode(base64_tmp.encode('utf8')).decode('utf8')
+    print('base64_out['+str(len(base64_out))+']:' + base64_out)
+
+    # [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+    src1 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可🐘" # ValueError가 발생하는 경우
+    print('src1['+str(len(src1))+']:' + src1)
+    try :
+        tmp1 = AN61.encode(src1)
+        print('tmp1:' + tmp1)
+        out1 = AN61.decode(tmp1)
+        print('out1:' + out1)
+    except ValueError as ve :
+        print('Error : ' + str(ve))
+        tmp2 = Base62.encode(src1.encode("utf8"))
+        print('tmp2['+str(len(tmp2))+']:' + tmp2)
+        out2 = Base62.decode(tmp2).decode("utf8")
+        print('out2['+str(len(out2))+']:' + out2)
+        print('src1 == out2 :', (src1 == out2))
+```
+-----------------------------------------------------------------------------------
+```
+src0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+an61__tmp0[76]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y       
+an61__out0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src0 == an61__out0 : True
+base64_tmp[76]:aHR0cDovL3Rlc3QuY29tOjgwODAvYW42MS5kbz9uYW1lPeqwgOuCmOuLpCDjhLHjhLTigLsK5Y+v       
+base64_out[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src1[44]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可�🐘
+Error : Illegal base62 character index 43 �🐘
+tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U      
+out2[44]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可�🐘
+src1 == out2 : True
 ```

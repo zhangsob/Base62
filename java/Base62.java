@@ -220,7 +220,7 @@ public class Base62 {
 		return dst ;
 	}
 	
-	private static String toHexa(byte[] bin) {
+	private static String bin2hexa(byte[] bin) {
 		StringBuilder ret = new StringBuilder() ;
 
 		for(int i = 0, len = bin.length; i < len; ++i) {
@@ -244,14 +244,14 @@ public class Base62 {
 				bin[i] = (byte)i ;
 				
 			System.out.println("----bin["+bin.length+"]----") ;
-			System.out.println(toHexa(bin)) ;
+			System.out.println(Base62.bin2hexa(bin)) ;
 
 			String txt = Base62.encode(bin) ;
 			System.out.println("txt["+txt.length()+"]:" + txt) ;
 
 			byte[] out = Base62.decode(txt) ;
 			System.out.println("----out["+out.length+"]----") ;
-			System.out.println(toHexa(out)) ;
+			System.out.println(Base62.bin2hexa(out)) ;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
