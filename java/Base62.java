@@ -3,7 +3,7 @@ import java.util.Arrays;
 /**
  * BASE62.. Text에서 특수문자를 제거한 숫자(10)+영문대문자(26)+영문소문자(26) = 62가지 문자로 변환하기<br/>
  * <br/>       
- * 원리 : 0x00 ~ 0xEF까지는 0~9,A~Z,a~y로 AN62(<a href='https://github.com/zhansgsob/AN62'>https://github.com/zhansgsob/AN62</a> 참조)로 표현이 가능하다.<br/>               
+ * 원리 : 0x00 ~ 0xEF까지는 0~9,A~Z,a~y로 AN61(<a href='https://github.com/zhansgsob/Base62'>https://github.com/zhansgsob/Base62</a> 참조)로 표현이 가능하다.<br/>               
  *        'z'를 0xF0 ~ 0xFF을 escape하는 용도로 한다.<br/>
  *		  <br/>        
  *        0xXx 0xYy 0xFz : 0x1XxYyz<br/>
@@ -165,10 +165,18 @@ public class Base62 {
 			if(count % 4 == 0) {
 				if (isFX != 0) {
 					isFX = value >> 20 ;
+
 					for (int j = 2, mask = 1; j >= 0; --j, mask <<= 1) {
-						tmp[j] = (byte)(value & 0x0F) ;	value >>= 4 ;
-						if ((isFX & mask) == mask)	{	tmp[j] |= 0xF0 ;	}
-						else						{	tmp[j] |= (value & 0x0F) << 4 ;	value >>= 4 ;	}
+						tmp[j] = (byte)(value & 0x0F) ;
+						value >>= 4 ;
+					
+						if ((isFX & mask) == mask) {
+							tmp[j] |= 0xF0 ;
+						}
+						else {
+							tmp[j] |= (value & 0x0F) << 4 ;
+							value >>= 4 ;
+						}
 					}
 					isFX = 0 ;
 				}
@@ -232,14 +240,14 @@ public class Base62 {
 	public static void main(String[] args) {
 		try {
 			byte[] bin = new byte[256] ;
-			for(int i = 0; i <= 0xFF; ++i)
+			for(int i = 0; i < bin.length; ++i)
 				bin[i] = (byte)i ;
 				
 			System.out.println("----bin["+bin.length+"]----") ;
 			System.out.println(toHexa(bin)) ;
 
 			String txt = Base62.encode(bin) ;
-			System.out.println("txt:" + txt) ;
+			System.out.println("txt["+txt.length()+"]:" + txt) ;
 
 			byte[] out = Base62.decode(txt) ;
 			System.out.println("----out["+out.length+"]----") ;

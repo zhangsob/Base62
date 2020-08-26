@@ -21,7 +21,7 @@ BASE64 Encode의 원리도
 
 위까지는 AN61 [ String To String Encoding/Decoding ] 에 대한 설명이며,
 
-여기서, 62가지중 'z'를 escape(0xFX영역)하여 Binary도 지원한다.
+여기서, 62가지중 'z'를 escape(0xFX영역)하여 Binary도 지원한다.  
 Base62 [ Binary To String Encoding / Decoding(String To Binary) ]에서는 아래와 같이 한다.
 
 |             3 Byte            |             Value             |
@@ -32,9 +32,8 @@ Base62 [ Binary To String Encoding / Decoding(String To Binary) ]에서는 아�
 | 1111 xxxx yyyy yyyy zzzz zzzz |  100 xxxx yyyy yyyy zzzz zzzz |
 | 1111 xxxx yyyy yyyy 1111 zzzz |  101 0000 xxxx yyyy yyyy zzzz |
 | 1111 xxxx 1111 yyyy zzzz zzzz |  110 0000 xxxx yyyy zzzz zzzz |
-| 1111 xxxx 1111 yyyy 1111 zzzz |  111 0000 0000 xxxx yyyy zzzz |
-
-3Byte중 0xF0 ~ 0xFF ( 0xFX )에 해당 Byte을 위와 같이 Value를 전환하여 보면, 23bit로 표현이 가능하다. 
+| 1111 xxxx 1111 yyyy 1111 zzzz |  111 0000 0000 xxxx yyyy zzzz |  
+3Byte중 0xF0 ~ 0xFF ( 0xFX )에 해당 Byte을 위와 같이 Value를 전환하여 보면, 23bit로 표현이 가능하다.  
 상위 3bit는 0xFX의 위치를 표시하며, 하위 20bit가 나머지 값이다.
 
 2<sup>23</sup> < 240<sup>3</sup> < 61<sup>4</sup> ( 8,388,608 < 13,824,000 < 13,845,841 ) 이므로 표현이 가능하다.
@@ -43,22 +42,27 @@ Base62 [ Binary To String Encoding / Decoding(String To Binary) ]에서는 아�
 |---------------------|---------------------|
 | xxxx xxxx 1111 yyyy |   01 xxxx xxxx yyyy |
 | 1111 xxxx yyyy yyyy |   10 xxxx yyyy yyyy |
-| 1111 xxxx 1111 yyyy |   11 0000 xxxx yyyy |
+| 1111 xxxx 1111 yyyy |   11 0000 xxxx yyyy |  
 2<sup>14</sup> < 240<sup>2</sup> < 61<sup>3</sup> ( 16,384 < 57,600 < 226,981 ) 이므로 표현이 가능하다.
 
 |  1 Byte   |    Value  |
 |-----------|-----------|
-| 1111 xxxx |    1 xxxx |
+| 1111 xxxx |    1 xxxx |  
 2<sup>5</sup> < 240<sup>1</sup> < 61<sup>2</sup> ( 32 < 240 < 3,721 ) 이므로 표현이 가능하다.
 
+## Encoding
+Base62 : Binary to AlphaNumeric Only String Encoding  
+AN61 : UCS2 String to AlphaNumeric Only String Encoding
+
 ## 장단점
-단점 : BASE64는 bit연산으로 구현하고, AN62는 산술연산으로 다소 속도는 느림  
+단점 : BASE64는 bit연산으로 구현하고, Base62(AN61)는 산술연산으로 다소 속도는 느림  
 
 장점 : 특수문자(기호)가 없어 어떠한 환경에서 값으로 사용할 수 있음.  
 
 ## 지원언어
 아래 언어로 소스코드를 올립니다. 
 - java
+- javascript
 
 ## 예
 - java (Base62)
@@ -182,4 +186,117 @@ tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfS
 out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可🐘
 src1.equals(out2) : true
+```
+
+- javascript (Base62)
+```javascript
+try {
+    var bin = [], i = 0 ;
+    for(i = 0;i < 256; ++i)
+        bin[i] = i ;
+
+    print('----bin['+bin.length+']----') ;
+    print(Base62.bin2hexa(bin)) ;
+
+    var txt = Base62.encode(bin) ;
+    print('txt['+txt.length+']:' + txt) ;
+
+    var out = Base62.decode(txt) ;
+    print('----out['+out.length+']----') ;
+    print(Base62.bin2hexa(out)) ;
+} catch(e) {
+    print(e) ;
+}
+```
+-----------------------------------------------------------------------------------
+```
+----bin[256]----
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
+
+txt[348]:003x0kgb1WKF2Hws33aW3oEA4Zqn5LUR67856rki7dOM8P209Aed9vIHAguuBSYYCECCCyopDkSTEW67FHikG3MOGo02HZcfILGJJ6swJrWaKdAELOmrMAQVMv49NggmOSKQPDx4PyahQkELRVqySHUcT38GTnktUZOXVL2BW6eoWrISXcv6YOYjZACNZup1agSebS6IcDivcyMZdk0DeVcqfHGUg2t8gnWlhZAPiKn3j6Qgjr4KkcgxlOKbm9xFmuasngEWoRrApDUnpy8Rqjl5rVOisH2Mt2f0tnIduYvHvKYuw6CYwqpCxcSpyO6TzWKagzWKo7zWL2XzWLFxzWLTOz0V
+----out[256]----
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
+```
+
+- javascript (AN61)
+```javascript
+try {
+    var src0 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可" ;
+    print('src0['+src0.length+']:' + src0) ;
+    var tmp0 = AN61.encode(src0) ;
+    print('tmp0['+tmp0.length+']:' + tmp0) ;
+    var out0 = AN61.decode(tmp0) ;
+    print('out0['+out0.length+']:' + out0) ;
+    print('src0 === out0 : ' + (src0 === out0)) ;
+
+    // [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+    var src1 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可🐘" ;    // Exception이 발생하는 경우
+    print('src1['+src1.length+']:' + src1) ;
+    try {
+        var tmp1 = AN61.encode(src1) ;
+        print("tmp1:" + tmp1) ;
+        var out1 = AN61.decode(tmp1) ;
+        print("out1:" + out1) ;
+    }
+    catch(e) {
+        console.error(e) ;
+        console.log('typeof Base62 : ' + (typeof Base62)) ;
+        if(typeof Base62 === 'object') {
+            var tmp2 = Base62.encode(AN61.toUTF8(src1)) ;
+            print('tmp2['+tmp2.length+']:' + tmp2) ;
+            var out2 = AN61.fromUTF8(Base62.decode(tmp2)) ;
+            print('out2['+out2.length+']:' + out2) ;
+            print('src1 === out2 : ' + (src1 === out2)) ;
+        }
+    }
+} catch(e) {
+    print(e) ;
+}
+```
+-----------------------------------------------------------------------------------
+```
+src0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+tmp0[76]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+out0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src0 === out0 : true
+src1[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+invalid UCS2 character index 43 🐘
+typeof Base62 : object
+tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+src1 === out2 : true
 ```
