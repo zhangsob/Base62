@@ -71,6 +71,7 @@ AN62 : All Unicode String to AlphaNumeric Only String Encoding - [https://github
 - javascript
 - python
 - c#
+- cpp
 
 ## 예
 - java (Base62)
@@ -532,4 +533,359 @@ tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfS
 out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可??
 (src1 == out2) : True
+```
+
+## 예
+- cpp (Base62)
+```cpp
+// charset : ASCII
+#include "base62.h"
+#include <stdio.h>
+
+std::string bin2hexa(const std::vector<unsigned char>& bin)
+{
+	std::string ret ;
+	char tmp[4] ;
+	for (size_t i = 0, len = bin.size(); i < len; ++i) {
+		sprintf(tmp, "%02X ", bin[i] & 0xFF) ;
+		ret.append(tmp) ;
+		if(i % 16 == 7)			ret.push_back(' ') ;
+		else if(i % 16 == 15)	ret.push_back('\n') ;
+	}
+	if(bin.size() % 16 != 0)	ret.push_back('\n') ;
+	return ret ;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector<unsigned char> bin ;
+	bin.resize(256) ;
+	for(size_t i = 0, len = bin.size(); i < len; ++i)
+		bin[i] = (unsigned char)i ;
+
+	printf("----bin[%zu]----\n", bin.size()) ;
+	printf("%s\n", bin2hexa(bin).c_str()) ;
+
+	std::string txt = Base62::encode(bin) ;
+	printf("txt[%zu]:%s\n", txt.size(), txt.c_str()) ;
+
+	std::vector<unsigned char> out = Base62::decode(txt) ;
+	printf("----out[%zu]----\n", out.size()) ;
+	printf("%s\n", bin2hexa(out).c_str()) ;
+
+	return 0 ;
+}
+```
+-----------------------------------------------------------------------------------
+```
+----bin[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
+
+txt[348]:003x0kgb1WKF2Hws33aW3oEA4Zqn5LUR67856rki7dOM8P209Aed9vIHAguuBSYYCECCCyopDkSTEW67FHikG3MOGo02HZcfILGJJ6swJrWaKdAELOmrMAQVMv49NggmOSKQPDx4PyahQkELRVqySHUcT38GTnktUZOXVL2BW6eoWrISXcv6YOYjZACNZup1agSebS6IcDivcyMZdk0DeVcqfHGUg2t8gnWlhZAPiKn3j6Qgjr4KkcgxlOKbm9xFmuasngEWoRrApDUnpy8Rqjl5rVOisH2Mt2f0tnIduYvHvKYuw6CYwqpCxcSpyO6TzWKagzWKo7zWL2XzWLFxzWLTOz0V
+----out[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
+```
+
+## 예
+- cpp (AN61 on Windows)
+```cpp
+// charset : EUC-KR(on Windows)
+#include "an61.h"
+#include "zstring.h"
+#include "base62.h"
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+	std::string locale(setlocale(LC_ALL, "")) ;
+	printf("locale : [%s]\n", locale.c_str()) ;
+	printf("sizeof(wchar_t) : %zd\n", sizeof(wchar_t)) ;
+
+	{
+		printf("---wstring to wstring---\n") ;
+		std::wstring src0 = L"http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可" ;
+		printf("src0[%zd]:%s\n", src0.length(), wstring2system(src0).c_str()) ;
+		std::string tmp0 = AN61::encode(src0) ;
+		printf("tmp0:%s\n", tmp0.c_str()) ;
+		std::wstring out0 = AN61::decode(tmp0) ;
+		printf("out0:%s\n", wstring2system(out0).c_str()) ;
+		printf("src0.compare(out0) : %d\n", src0.compare(out0)) ;
+	}
+
+	{
+		if(isSystemUTF8())  printf("---UTF8 to UTF8---\n") ;
+		else                printf("---EUC-KR to EUC-KR---\n") ;
+		std::string src0 = "http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可" ;
+		printf("src0[%zd]:%s\n", src0.length(), src0.c_str()) ;
+		std::string tmp0 = AN61::encode(system2wstring(src0)) ;
+		printf("tmp0:%s\n", tmp0.c_str()) ;
+		std::string out0 = wstring2system(AN61::decode(tmp0)) ;
+		printf("out0:%s\n", out0.c_str()) ;
+		printf("src0.compare(out0) : %d\n", src0.compare(out0)) ;
+	}
+    
+	{
+		printf("---wstring to wstring---\n") ;
+		// [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+		std::wstring src1 = L"http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可" ;
+		if(sizeof(wchar_t) == 2) {	// Windows
+			src1.push_back((wchar_t)0xD83D) ;
+			src1.push_back((wchar_t)0xDC18) ;
+		}
+		else {	// Linux
+			src1.push_back((wchar_t)0x01F418) ;
+		}
+		printf("src1[%zd]:%s\n", src1.length(), wstring2system(src1).c_str()) ;
+		try {
+			std::string tmp1 = AN61::encode(src1) ;
+			printf("tmp1:%s\n", tmp1.c_str()) ;
+			std::wstring out1 = AN61::decode(tmp1) ;
+			printf("out1:%s\n", wstring2system(out1).c_str()) ;
+		}
+		catch(const std::exception& e) {
+			fprintf(stderr, "Error : %s\n", e.what()) ;
+			
+			std::string utf8 = wstring2utf8(src1) ;
+			std::vector<unsigned char> utf8_bin(utf8.cbegin(), utf8.cend()) ;
+			std::string tmp2 = Base62::encode(utf8_bin) ;
+			printf("tmp2[%zu]:%s\n", tmp2.size(), tmp2.c_str()) ;
+
+			std::vector<unsigned char> out2_bin = Base62::decode(tmp2) ;
+			std::string utf8_str(out2_bin.cbegin(), out2_bin.cend()) ;
+			std::wstring out2 = utf8_to_wstring(utf8_str) ;
+			printf("out2[%zu]:%s\n", out2.size(), wstring2system(out2).c_str()) ;
+
+			printf("src1.compare(out2) : %d\n", src1.compare(out2)) ;
+		}
+	}
+
+	{
+		printf("---utf8 to utf8---\n") ;
+		// [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+		std::string utf8 = system2utf8("http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可") ;
+		utf8.push_back((char)0xF0) ;
+		utf8.push_back((char)0x9F) ;
+		utf8.push_back((char)0x90) ;
+		utf8.push_back((char)0x98) ;
+		printf("utf8[%zd]:%s\n", utf8.length(), utf8_to_system(utf8).c_str()) ;
+		try {
+			std::string tmp1 = AN61::encode(utf8_to_wstring(utf8)) ;	
+			printf("tmp1:%s\n", tmp1.c_str()) ;
+			std::string out8 = wstring2utf8(AN61::decode(tmp1)) ;
+			printf("out8[%zd]:%s\n", out8.length(), utf8_to_system(out8).c_str()) ;
+		}
+		catch(const std::exception& e) {
+			fprintf(stderr, "Error : %s\n", e.what()) ;
+
+			std::vector<unsigned char> utf8_bin(utf8.cbegin(), utf8.cend()) ;
+			std::string tmp8 = Base62::encode(utf8_bin) ;
+			printf("tmp8[%zu]:%s\n", tmp8.size(), tmp8.c_str()) ;
+
+			std::vector<unsigned char> out8_bin = Base62::decode(tmp8) ;
+			std::string out8(out8_bin.cbegin(), out8_bin.cend()) ;
+			printf("out8[%zu]:%s\n", utf8.size(), utf8_to_system(utf8).c_str()) ;
+
+			printf("utf8.compare(out8) : %d\n", utf8.compare(out8)) ;
+		}
+	}
+
+	return 0 ;
+}
+```
+-----------------------------------------------------------------------------------
+```
+locale : [Korean_Korea.949]
+sizeof(wchar_t) : 2
+---wstring to wstring---
+src0[43]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+tmp0:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+out0:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+src0.compare(out0) : 0
+---EUC-KR to EUC-KR---
+src0[50]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+tmp0:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+out0:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+src0.compare(out0) : 0
+---wstring to wstring---
+src1[45]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可??
+Error : invalid UCS2 character
+tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out2[45]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可??
+src1.compare(out2) : 0
+---utf8 to utf8---
+utf8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可??
+Error : invalid UCS2 character
+tmp8[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可??
+utf8.compare(out8) : 0
+```
+
+## 예
+- cpp (AN61 on Linux)
+```cpp
+// charset : UTF-8(on Linux)
+#include "an61.h"
+#include "zstring.h"
+#include "base62.h"
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+	std::string locale(setlocale(LC_ALL, "")) ;
+	printf("locale : [%s]\n", locale.c_str()) ;
+	printf("sizeof(wchar_t) : %zd\n", sizeof(wchar_t)) ;
+
+	{
+		printf("---wstring to wstring---\n") ;
+		std::wstring src0 = L"http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可" ;
+		printf("src0[%zd]:%s\n", src0.length(), wstring2system(src0).c_str()) ;
+		std::string tmp0 = AN61::encode(src0) ;
+		printf("tmp0:%s\n", tmp0.c_str()) ;
+		std::wstring out0 = AN61::decode(tmp0) ;
+		printf("out0:%s\n", wstring2system(out0).c_str()) ;
+		printf("src0.compare(out0) : %d\n", src0.compare(out0)) ;
+	}
+
+	{
+		if(isSystemUTF8())  printf("---UTF8 to UTF8---\n") ;
+		else                printf("---EUC-KR to EUC-KR---\n") ;
+		std::string src0 = "http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可" ;
+		printf("src0[%zd]:%s\n", src0.length(), src0.c_str()) ;
+		std::string tmp0 = AN61::encode(system2wstring(src0)) ;
+		printf("tmp0:%s\n", tmp0.c_str()) ;
+		std::string out0 = wstring2system(AN61::decode(tmp0)) ;
+		printf("out0:%s\n", out0.c_str()) ;
+		printf("src0.compare(out0) : %d\n", src0.compare(out0)) ;
+	}
+    
+	{
+		printf("---wstring to wstring---\n") ;
+		// [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+		std::wstring src1 = L"http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可🐘" ;
+		printf("src1[%zd]:%s\n", src1.length(), wstring2system(src1).c_str()) ;
+		try {
+			std::string tmp1 = AN61::encode(src1) ;
+			printf("tmp1:%s\n", tmp1.c_str()) ;
+			std::wstring out1 = AN61::decode(tmp1) ;
+			printf("out1:%s\n", wstring2system(out1).c_str()) ;
+		}
+		catch(const std::exception& e) {
+			fprintf(stderr, "Error : %s\n", e.what()) ;
+			
+			std::string utf8 = wstring2utf8(src1) ;
+			std::vector<unsigned char> utf8_bin(utf8.cbegin(), utf8.cend()) ;
+			std::string tmp2 = Base62::encode(utf8_bin) ;
+			printf("tmp2[%zu]:%s\n", tmp2.size(), tmp2.c_str()) ;
+
+			std::vector<unsigned char> out2_bin = Base62::decode(tmp2) ;
+			std::string utf8_str(out2_bin.cbegin(), out2_bin.cend()) ;
+			std::wstring out2 = utf8_to_wstring(utf8_str) ;
+			printf("out2[%zu]:%s\n", out2.size(), wstring2system(out2).c_str()) ;
+
+			printf("src1.compare(out2) : %d\n", src1.compare(out2)) ;
+		}
+	}
+
+	{
+		printf("---utf8 to utf8---\n") ;
+		// [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+		std::string utf8 = system2utf8("http://test.com:8080/an62.do?name=가나다 ㄱㄴ※\n可🐘") ;
+		printf("utf8[%zd]:%s\n", utf8.length(), utf8_to_system(utf8).c_str()) ;
+		try {
+			std::string tmp1 = AN61::encode(utf8_to_wstring(utf8)) ;	
+			printf("tmp1:%s\n", tmp1.c_str()) ;
+			std::string out8 = wstring2utf8(AN61::decode(tmp1)) ;
+			printf("out8[%zd]:%s\n", out8.length(), utf8_to_system(out8).c_str()) ;
+		}
+		catch(const std::exception& e) {
+			fprintf(stderr, "Error : %s\n", e.what()) ;
+
+			std::vector<unsigned char> utf8_bin(utf8.cbegin(), utf8.cend()) ;
+			std::string tmp8 = Base62::encode(utf8_bin) ;
+			printf("tmp8[%zu]:%s\n", tmp8.size(), tmp8.c_str()) ;
+
+			std::vector<unsigned char> out8_bin = Base62::decode(tmp8) ;
+			std::string out8(out8_bin.cbegin(), out8_bin.cend()) ;
+			printf("out8[%zu]:%s\n", utf8.size(), utf8_to_system(utf8).c_str()) ;
+
+			printf("utf8.compare(out8) : %d\n", utf8.compare(out8)) ;
+		}
+	}
+
+	return 0 ;
+}
+
+```
+-----------------------------------------------------------------------------------
+```
+locale : [ko_KR.UTF-8]
+sizeof(wchar_t) : 4
+---wstring to wstring---
+src0[43]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+tmp0:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+out0:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+src0.compare(out0) : 0
+---UTF8 to UTF8---
+src0[57]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+tmp0:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+out0:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可
+src0.compare(out0) : 0
+---wstring to wstring---
+src1[44]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可🐘
+Error : invalid UCS2 character
+tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out2[44]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可🐘
+src1.compare(out2) : 0
+---utf8 to utf8---
+utf8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可🐘
+Error : invalid UCS2 character
+tmp8[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CixjSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
+可🐘
+utf8.compare(out8) : 0
 ```
