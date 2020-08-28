@@ -197,9 +197,15 @@ public class Base62 {
 			if (isFX != 0) {
 				isFX = value >> ((len >= 2) ? 12 : 4) ;
 				for (int j = len-1, mask = 1; j >= 0; --j, mask <<= 1) {
-					tmp[j] = (byte)(value & 0x0F) ;	value >>= 4 ;
-					if ((isFX & mask) == mask)	{	tmp[j] |= 0xF0 ;	}
-					else						{	tmp[j] |= (value & 0x0F) << 4 ;	value >>= 4 ;	}
+					tmp[j] = (byte)(value & 0x0F) ;
+					value >>= 4 ;
+					if ((isFX & mask) == mask) {
+						tmp[j] |= 0xF0 ;
+					}
+					else {
+						tmp[j] |= (value & 0x0F) << 4 ;
+						value >>= 4 ;
+					}
 				}
 			}
 			else {
