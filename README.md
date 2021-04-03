@@ -67,14 +67,15 @@ AN62 : All Unicode String to AlphaNumeric Only String Encoding - [https://github
 
 ## 지원언어
 아래 언어로 소스코드를 올립니다. 
-- java : [BASE62 예](#base62_java), [AN61 예](#an62_java)
-- javascript
-- python
-- c#
-- cpp
+- java : [BASE62 예](#base62_java), [AN61 예](#an61_java)
+- javascript : [BASE62 예](#base62_javascript), [AN61 예](#an61_javascript)
+- python : [BASE62 예](#base62_python), [AN61 예](#an61_python)
+- c# : [BASE62 예](#base62_csharp), [AN61 예](#an61_csharp)
+- cpp : [BASE62 예 (Windows)](#base62_cpp), [AN61 예 (Windows)](#an61_cpp_windows), [AN61 예 (Linux)](#an61_cpp_linux)
+- pascal : [BASE62 예](#base62_pascal), [AN61 예 (Delphi)](#an61_pascal_delphi), [AN61 예 (Free Pascal)](#an61_pascal_free_pascal)
 
 <a name="base62_java"></a>
-## Java Base62 예
+## Java BASE62 예
 ```java
 public static void main(String[] args) {
     try {
@@ -198,7 +199,8 @@ out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 src1.equals(out2) : true
 ```
 
-- javascript (Base62)
+<a name="base62_javascript"></a>
+## JavaScript BASE62 예
 ```javascript
 try {
     var bin = [], i = 0 ;
@@ -258,7 +260,8 @@ E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
 ```
 
-- javascript (AN61)
+<a name="an61_javascript"></a>
+## JavaScript AN61 예
 ```javascript
 try {
     var src0 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可" ;
@@ -311,7 +314,8 @@ out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 src1 === out2 : true
 ```
 
-- python (Base62)
+<a name="base62_python"></a>
+## Python BASE62 예
 ```python
 if __name__ == '__main__':
     bin = bytearray(256) ;
@@ -366,7 +370,8 @@ E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
 ```
 
-- python (AN61)
+<a name="an61_python"></a>
+## Python AN61 예
 ```python
 if __name__ == '__main__':
     src0 = 'http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可'
@@ -417,8 +422,8 @@ out2[44]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 src1 == out2 : True
 ```
 
-## 예
-- c# (Base62)
+<a name="base62_csharp"></a>
+## C# BASE62 예
 ```c#
 static void Main(string[] args)
 {
@@ -477,7 +482,8 @@ E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
 ```
 
-- c# (AN61)
+<a name="an61_csharp"></a>
+## C# AN61 예
 ```c#
 static void Main(string[] args)
 {
@@ -536,8 +542,8 @@ out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 (src1 == out2) : True
 ```
 
-## 예
-- cpp (Base62)
+<a name="base62_cpp"></a>
+## CPP BASE62 예
 ```cpp
 // charset : ASCII
 #include "base62.h"
@@ -617,8 +623,8 @@ E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
 ```
 
-## 예
-- cpp (AN61 on Windows)
+<a name="an61_cpp_windows"></a>
+## CPP AN61 예 (Windows)
 ```cpp
 // charset : EUC-KR(on Windows)
 #include "an61.h"
@@ -759,8 +765,8 @@ out8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
 utf8.compare(out8) : 0
 ```
 
-## 예
-- cpp (AN61 on Linux)
+<a name="an61_cpp_linux"></a>
+## CPP AN61 예 (Linux)
 ```cpp
 // charset : UTF-8(on Linux)
 #include "an61.h"
@@ -891,8 +897,8 @@ out8[61]:http://test.com:8080/an62.do?name=가나다 ㄱㄴ※
 utf8.compare(out8) : 0
 ```
 
-## 예
-- pascal (Base62)
+<a name="base62_pascal"></a>
+## Pascal BASE62 예
 ```pascal
 program Base62Test;
 
@@ -983,8 +989,8 @@ E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF
 ```
 
-## 예
-- pascal (AN61 on Delphi7)
+<a name="an61_pascal_delphi"></a>
+## Pascal AN61 예 (Delphi)
 ```pascal
 { charset : EUC-KR }
 program AN61Test;
@@ -1146,9 +1152,8 @@ wout[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可??
 wsrc = wout : TRUE
 ```
-
-## 예
-- pascal (AN61 on Free Pascal)
+<a name="an61_pascal_free_pascal"></a>
+## Pascal AN61 예 (Free Pascal)
 ```pascal
 { charset : UTF-8 }
 program AN61Test;
