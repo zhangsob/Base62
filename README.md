@@ -67,14 +67,14 @@ AN62 : All Unicode String to AlphaNumeric Only String Encoding - [https://github
 
 ## 지원언어
 아래 언어로 소스코드를 올립니다. 
-- java
+- java : [BASE62 예](#base62_java), [AN61 예](#an62_java)
 - javascript
 - python
 - c#
 - cpp
 
-## 예
-- java (Base62)
+<a name="base62_java"></a>
+## Java Base62 예
 ```java
 public static void main(String[] args) {
     try {
@@ -136,7 +136,8 @@ E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF
 F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF 
 ```
 
-- java (AN61)
+<a name="an61_java"></a>
+## Java AN61 예
 ```java
 public static void main(String[] args) {
     try {
