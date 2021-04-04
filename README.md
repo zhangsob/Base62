@@ -1,6 +1,6 @@
 # BASE62 (AN61 : AlphaNumeric61)
 BASE64 Encode에는 +/= 기본형 또는 -_= URL형이 있다.  
-여기서, 항상 특수문자가 문제가 되어. 0&#126;9, A&#126;Z, a&#126;z만으로 이루어진 Base62 (및 AN61 : AlphaNumeric61)을 만들어 보았다.
+여기서, 항상 특수문자가 문제가 되어, 0&#126;9, A&#126;Z, a&#126;z만으로 이루어진 Base62 (및 AN61 : AlphaNumeric61)을 만들어 보았다.
 
 ## 원리
 - AN61  
@@ -73,6 +73,7 @@ AN62 : All Unicode String to AlphaNumeric Only String Encoding - [https://github
 - c# : [BASE62 예](#base62_csharp), [AN61 예](#an61_csharp)
 - cpp : [BASE62 예 (Windows)](#base62_cpp), [AN61 예 (Windows)](#an61_cpp_windows), [AN61 예 (Linux)](#an61_cpp_linux)
 - pascal : [BASE62 예](#base62_pascal), [AN61 예 (Delphi)](#an61_pascal_delphi), [AN61 예 (Free Pascal)](#an61_pascal_free_pascal)
+- php : [BASE62 예](#base62_php), [AN61 예](#an61_php)
 
 <a name="base62_java"></a>
 ## Java BASE62 예
@@ -1299,4 +1300,160 @@ wtmp[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfS
 wout[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可??
 wsrc = wout : TRUE
+```
+
+<a name="base62_php"></a>
+## PHP BASE62 예
+```php
+<?php require_once 'base62.php' ?>
+<!DOCTYPE html>
+<html>
+<body>
+<code>
+<?php
+function toHexa(string $str) {
+	$bin = unpack('C*', $str) ;
+	$len = count($bin) ;
+	$ret = "" ;
+	for($i = 1;$i <= $len; ++$i) {
+		$ret .= sprintf("%02X ", $bin[$i]) ;
+		if($i % 16 == 0)
+			$ret .= "\n" ;
+		else if($i % 16 == 8)
+			$ret .= " " ;
+	}
+	return $ret ;
+}
+
+try {
+	$bin = "" ;
+	for($i = 0; $i < 256; ++$i)
+		$bin .= chr($i) ;
+	printf("----\$bin[%d]----<br/>", strlen($bin)) ;
+	printf("%s<br/>", nl2br(toHexa($bin))) ;
+	$txt = Base62::encode($bin) ;
+	printf("txt:%s<br/>", nl2br($txt)) ;
+	$out = Base62::decode($txt) ;
+	printf("----\$out[%d]----<br/>", strlen($out)) ;
+	printf("%s<br/>", nl2br(toHexa($out))) ;
+	
+} catch(Exception $ex) {
+	printf("Exception : %s<br/>", $ex->getMessage()) ;
+}
+?>
+</code>
+</body>
+</html>
+```
+-----------------------------------------------------------------------------------
+```
+----$bin[256]----
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
+
+txt:003x0kgb1WKF2Hws33aW3oEA4Zqn5LUR67856rki7dOM8P209Aed9vIHAguuBSYYCECCCyopDkSTEW67FHikG3MOGo02HZcfILGJJ6swJrWaKdAELOmrMAQVMv49NggmOSKQPDx4PyahQkELRVqySHUcT38GTnktUZOXVL2BW6eoWrISXcv6YOYjZACNZup1agSebS6IcDivcyMZdk0DeVcqfHGUg2t8gnWlhZAPiKn3j6Qgjr4KkcgxlOKbm9xFmuasngEWoRrApDUnpy8Rqjl5rVOisH2Mt2f0tnIduYvHvKYuw6CYwqpCxcSpyO6TzWKagzWKo7zWL2XzWLFxzWLTOz0V
+----$out[256]----
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
+30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
+40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F
+50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F
+60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F
+70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F
+80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F
+90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F
+A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF
+B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF
+C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF
+D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF
+E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF
+F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF
+ 
+```
+
+<a name="an61_php"></a>
+## PHP AN61 예
+```php
+<?php require_once 'an61.php' ?>
+<?php require_once 'base62.php' ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<code>
+<?php
+try {
+	$src0 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可" ;
+	printf("src0[%d] : %s<br/>", strlen($src0), nl2br($src0)) ;
+	$an61__tmp0 = AN61::encode($src0) ;
+	printf("an61__tmp0:%s<br/>", nl2br($an61__tmp0)) ;
+	$an61__out0 = AN61::decode($an61__tmp0) ;
+	printf("an61__out0:%s<br/>", nl2br($an61__out0)) ;
+	$base64_tmp = base64_encode($src0) ;
+	printf("base64_tmp:%s<br/>", nl2br($base64_tmp)) ;
+	$base64_out = base64_decode($base64_tmp) ;
+	printf("base64_out:%s<br/>", nl2br($base64_out)) ;
+	
+	// [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+	$src1 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可🐘" ;
+	printf("src1[%d]:%s<br/>", strlen($src1), nl2br($src1)) ;
+	try {
+		$tmp1 = AN61::encode($src1) ;
+		printf("tmp1:%s<br/>", nl2br($tmp1)) ;
+		$out1 = AN61::decode($tmp1) ;
+		printf("out1:%s<br/>", nl2br($out1)) ;
+	}
+	catch(Exception $e) {
+		printf("Exception : %s<br/>", $e->getMessage()) ;
+		
+		$tmp2 = Base62::encode($src1) ;
+		printf("tmp2:%s<br/>", nl2br($tmp2)) ;
+		$out2 = Base62::decode($tmp2) ;
+		printf("out2:%s<br/>", nl2br($out2)) ;
+		
+		if($src1 === $out2)	echo("src1 === out2<br/>") ;
+	}
+	
+} catch(Exception $ex) {
+	printf("Exception : %s<br/>", $ex->getMessage()) ;
+}
+?>
+</code>
+</body>
+</html>
+```
+-----------------------------------------------------------------------------------
+```
+src0[57] : http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+an61__tmp0:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+an61__out0:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+base64_tmp:aHR0cDovL3Rlc3QuY29tOjgwODAvYW42MS5kbz9uYW1lPeqwgOuCmOuLpCDjhLHjhLTigLsK5Y+v
+base64_out:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src1[61]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+Exception : invalid UCS2 character
+tmp2:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out2:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+src1 === out2
 ```
