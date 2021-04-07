@@ -74,6 +74,7 @@ AN62 : All Unicode String to AlphaNumeric Only String Encoding - [https://github
 - cpp : [BASE62 예 (Windows)](#base62_cpp), [AN61 예 (Windows)](#an61_cpp_windows), [AN61 예 (Linux)](#an61_cpp_linux)
 - pascal : [BASE62 예](#base62_pascal), [AN61 예 (Delphi)](#an61_pascal_delphi), [AN61 예 (Free Pascal)](#an61_pascal_free_pascal)
 - php : [BASE62 예](#base62_php), [AN61 예](#an61_php)
+- kotlin : [BASE62 예](#base62_kotlin), [AN61 예](#an61_kotlin)
 
 <a name="base62_java"></a>
 ## Java BASE62 예
@@ -1456,4 +1457,139 @@ tmp2:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7
 out2:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
 可🐘
 src1 === out2
+```
+
+<a name="base62_kotlin"></a>
+## Kotlin BASE62 예
+```kotlin
+fun bin2hexa(bin: ByteArray): String {
+    val ret = StringBuilder()
+    for (i in bin.indices) {
+        ret.append(String.format("%02X ", bin[i]))
+        when (i % 16) {
+            7 -> ret.append(" ")
+            15 -> ret.append("\n")
+        }
+    }
+    if (bin.size % 16 != 0) ret.append("\n")
+    return ret.toString()
+}
+
+fun main(args: Array<String>) {
+    try {
+        val bin = ByteArray(256)
+        for (i in bin.indices) bin[i] = i.toByte()
+        println("----bin[" + bin.size + "]----")
+        println(bin2hexa(bin))
+        val txt = Base62.encode(bin)
+        println("txt[" + txt.length + "]:" + txt)
+        val out = Base62.decode(txt)
+        println("----out[" + out.size + "]----")
+        println(bin2hexa(out))
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+```
+-----------------------------------------------------------------------------------
+```
+
+----bin[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F 
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F 
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F 
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F 
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F 
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F 
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F 
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F 
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F 
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F 
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF 
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF 
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF 
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF 
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF 
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF 
+
+txt[348]:003x0kgb1WKF2Hws33aW3oEA4Zqn5LUR67856rki7dOM8P209Aed9vIHAguuBSYYCECCCyopDkSTEW67FHikG3MOGo02HZcfILGJJ6swJrWaKdAELOmrMAQVMv49NggmOSKQPDx4PyahQkELRVqySHUcT38GTnktUZOXVL2BW6eoWrISXcv6YOYjZACNZup1agSebS6IcDivcyMZdk0DeVcqfHGUg2t8gnWlhZAPiKn3j6Qgjr4KkcgxlOKbm9xFmuasngEWoRrApDUnpy8Rqjl5rVOisH2Mt2f0tnIduYvHvKYuw6CYwqpCxcSpyO6TzWKagzWKo7zWL2XzWLFxzWLTOz0V
+----out[256]----
+00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F 
+10 11 12 13 14 15 16 17  18 19 1A 1B 1C 1D 1E 1F 
+20 21 22 23 24 25 26 27  28 29 2A 2B 2C 2D 2E 2F 
+30 31 32 33 34 35 36 37  38 39 3A 3B 3C 3D 3E 3F 
+40 41 42 43 44 45 46 47  48 49 4A 4B 4C 4D 4E 4F 
+50 51 52 53 54 55 56 57  58 59 5A 5B 5C 5D 5E 5F 
+60 61 62 63 64 65 66 67  68 69 6A 6B 6C 6D 6E 6F 
+70 71 72 73 74 75 76 77  78 79 7A 7B 7C 7D 7E 7F 
+80 81 82 83 84 85 86 87  88 89 8A 8B 8C 8D 8E 8F 
+90 91 92 93 94 95 96 97  98 99 9A 9B 9C 9D 9E 9F 
+A0 A1 A2 A3 A4 A5 A6 A7  A8 A9 AA AB AC AD AE AF 
+B0 B1 B2 B3 B4 B5 B6 B7  B8 B9 BA BB BC BD BE BF 
+C0 C1 C2 C3 C4 C5 C6 C7  C8 C9 CA CB CC CD CE CF 
+D0 D1 D2 D3 D4 D5 D6 D7  D8 D9 DA DB DC DD DE DF 
+E0 E1 E2 E3 E4 E5 E6 E7  E8 E9 EA EB EC ED EE EF 
+F0 F1 F2 F3 F4 F5 F6 F7  F8 F9 FA FB FC FD FE FF 
+ 
+```
+
+<a name="an61_kotlin"></a>
+## Kotlin AN61 예
+```kotlin
+import java.io.UnsupportedEncodingException
+import java.util.*
+
+fun main(args: Array<String>) {
+    try {
+        val src0 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可"
+        println("src0[" + src0.length + "]:" + src0)
+        val an61__tmp0: String = AN61.encode(src0)
+        println("an61__tmp0[" + an61__tmp0.length + "]:" + an61__tmp0)
+        val an61__out0: String = AN61.decode(an61__tmp0)
+        println("an61__out0[" + an61__out0.length + "]:" + an61__out0)
+        println("src0.equals(an61__out0) : " + (src0 == an61__out0))
+        val base64_tmp = Base64.getEncoder().encodeToString(src0.toByteArray(charset("utf8")))
+        println("base64_tmp[" + base64_tmp.length + "]:" + base64_tmp)
+        val base64_out = String(Base64.getDecoder().decode(base64_tmp), charset("utf8"))
+        println("base64_out[" + base64_out.length + "]:" + base64_out)
+
+        // [ 코끼리 = Unicode : 01F418, UTF16 : D83D DC18, UTF8 : F0 9F 90 98 ]
+        val src1 = "http://test.com:8080/an61.do?name=가나다 ㄱㄴ※\n可🐘" // UnsupportedEncodingException이 발생하는 경우
+        println("src1[" + src1.length + "]:" + src1) // String.length()은 문자갯수가 아니라, UTF16의 길이다.
+        try {
+            val tmp1: String = AN61.encode(src1)
+            println("tmp1:$tmp1")
+            val out1: String = AN61.decode(tmp1)
+            println("out1:$out1")
+        } catch (uee: UnsupportedEncodingException) {
+            System.err.println(uee)
+            val tmp2: String = Base62.encode(src1.toByteArray(charset("utf8")))
+            println("tmp2[" + tmp2.length + "]:" + tmp2)
+            val out2 = String(Base62.decode(tmp2), charset("utf8"))
+            println("out2[" + out2.length + "]:" + out2)
+            println("src1.equals(out2) : " + (src1 == out2))
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+```
+-----------------------------------------------------------------------------------
+```
+src0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+an61__tmp0[76]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7Y
+an61__out0[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src0.equals(an61__out0) : true
+base64_tmp[76]:aHR0cDovL3Rlc3QuY29tOjgwODAvYW42MS5kbz9uYW1lPeqwgOuCmOuLpCDjhLHjhLTigLsK5Y+v
+base64_out[43]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可
+src1[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+tmp2[83]:QVOZSTTLC33NTIeJPEfTElRKEFxJOid7CTUTSEKmOiZwFiOXWiaIco6jfdmdXfmjXfyWWfSTwG7YzIeAi2U
+out2[45]:http://test.com:8080/an61.do?name=가나다 ㄱㄴ※
+可🐘
+src1.equals(out2) : true
+java.io.UnsupportedEncodingException: invalid UCS2 character index 43 🐘
 ```
