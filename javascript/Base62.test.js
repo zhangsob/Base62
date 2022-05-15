@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<style>
-body{
-    font-family: 'Courier New';
-}
-</style>
-<title>Base62</title>
-<script src='Base62.js'></script>
-<script>
+// for node
+const Base62 = require('./Base62.js') ;
+
 function print(msg) {
     if(typeof document !== 'undefined' && typeof msg === 'string')
         document.write(msg.replace(/\n/g,'<br/>') + '<br/>') ;
@@ -33,9 +24,3 @@ try {
 } catch(e) {
     print(e) ;
 }
-</script>
-</head>
-<body>
-
-</body>
-</html>

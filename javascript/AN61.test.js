@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<style>
-body{
-    font-family: 'Courier New';
-}
-</style>
-<title>AN61</title>
-<script src='Base62.js'></script>
-<script src='AN61.js'></script>
-<script>
+// for node
+const AN61 = require('./AN61.js') ;
+
 function print(msg) {
     if(typeof document !== 'undefined' && typeof msg === 'string')
         document.write(msg.replace(/\n/g,'<br/>') + '<br/>') ;
@@ -50,9 +40,3 @@ try {
 } catch(e) {
     print(e) ;
 }
-</script>
-</head>
-<body>
-
-</body>
-</html>
